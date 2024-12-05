@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int maxi;
+    void find_path(TreeNode* root,int step,int f){
+        if(root==NULL){
+          
+            return;
+           
+        }
+        maxi=max(maxi,step);
+        if(f==0){
+            find_path(root->right,step+1,1-f);
+            find_path(root->left,1,f);
+        }else{
+            find_path(root->left,step+1,1-f);
+            find_path(root->right,1,f);
+        }
+
+    }
+    // void find_longest_zigzag(TreeNode* root,int &maxi){
+    //     if(root==NULL){
+    //         return;
+    //     }
+    //     int find_right= find_path(root,0);
+    //     int find_left=find_path(root,1);
+    //     int maximum=max(find_right-1,find_left-1);
+    //     maxi=max(maxi,maximum);
+    //     find_longest_zigzag(root->left,maxi);
+    //     find_longest_zigzag(root->right,maxi);
+       
+       
+    // }
+    void longest_zig_zag(TreeNode* root,int left,int right){
+        if(root==NULL){
+            return;
+        }
+        maxi=max(maxi,max(left,right));
+        longest_zig_zag(root->left,1+right,0);
+        longest_zig_zag(root->right,0,1+left);
+    }
+    int longestZigZag(TreeNode* root) {
+       maxi=0;
+        //find_longest_zigzag(root,maxi);
+        //find_path(root,0,0);
+        longest_zig_zag(root,0,0);
+        return maxi;
+
+    }
+};
